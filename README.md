@@ -7,4 +7,4 @@ https://www.youtube.com/watch?v=tF1WRCrd_HQ <---- I merely improved his version 
 
 
 # Requirements
-- [Python3 (possibly 2)](python.org)
+- [Python3 (possibly 2)](https://www.python.org/)
