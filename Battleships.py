@@ -9,10 +9,37 @@ from random import randint
 from os import system
 from configparser import ConfigParser
 from time import sleep
+from pygame import mixer
 
 
 # vars
 fullscreen = None
+
+# music
+mixer.init()
+mixer.music.load('music.mp3')
+
+# other functions
+def settings():
+    while True:
+        system('cls')
+
+        turn_count = input('Number of turns: ')
+        parser.set('general', 'turns', turn_count)
+        with open('settings.cfg', 'w+') as configfile:
+            parser.write(configfile)
+
+        cheatsheet = input('Cheatsheet True/False: ')
+        parser.set('general', 'cheetsheet', cheatsheet)
+        with open('settings.cfg', 'w+') as configfile:
+            parser.write(configfile)
+
+        full = input('Fulscreen True/False: ')
+        parser.set('general', 'fullscreen', full)
+        with open('settings.cfg', 'w+') as configfile:
+            parser.write(configfile)
+
+        break
 
 
 parser = ConfigParser()
@@ -62,7 +89,28 @@ def count_hit_ships(board):
                 count += 1
     return count
 
+# main menu
+while True:
+    system('cls')
+
+    print('         Welcome To Battleships!')
+    print(
+        """
+
+           START or SETTINGS
+
+
+
+        """
+    )
+    choice = input('You want to? ').upper()
+    if choice == 'START':
+        break
+    if choice == 'SETTINGS':
+        settings()
+
 create_ships(HIDDEN_BOARD)
+mixer.music.play(loops = -1)
 turns = int(parser.get('general', 'turns'))
 
 if parser.get('general', 'cheetsheet') in ['True', 'true']:
@@ -111,6 +159,22 @@ while turns > 0:
                 break
     else:
         print('You have {} left'.format(turns))
-    if turns == 0:
+    if turns <= 0:
         print('Sorry, you have run out of turns, The game is over.')
+        sleep(3)
+        system('cls')
+        print(
+            """
+      ###########################
+      ###########################
+      ###########################
+      ###########################
+      Sorry, you've lost. Goodbye
+      ###########################
+      ###########################
+      ###########################
+      ###########################
+            """
+        )
+        sleep(5)
         break
